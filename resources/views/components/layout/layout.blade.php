@@ -12,13 +12,16 @@
             {{ $slot }}
         </main>
 
-        <div x-data="{ greeting: 'Hello' }">
-            <p x-text="greeting"></p>
-            <input type='text' x-model='greeting'>
-        </div>
-        
         @session('success')
-            <div class="bg-primary px-4py-3 absolute bottom-4 right-4 rounded-lg">{{ $value }}</div>
+            <div
+                x-data="{ show: true}"
+                x-init="setTimeout(()=> show = false, 3000)"
+                x-show="show"
+                x-transition.opacity.duration.300ms
+                class="bg-primary px-4py-3 absolute bottom-4 right-4 rounded-lg"
+            >
+                {{ $value }}
+            </div>
         @endsession
     </body>
 </html>
