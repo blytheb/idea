@@ -7,8 +7,8 @@
         </div>
 
         <div class="flex gap-x-5 items-center">
-            <a href="">Register</a>
-            <a href="" class="btn">Log In</a>
+            <a href="/register" class="btn">Register</a>
+            <a href="/login" class="btn">Log In</a>
         </div>
     </div>
 </nav>
