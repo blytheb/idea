@@ -4,20 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
+use App\IdeaStatus;
 use App\Models\Idea;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Request;
 
 class IdeaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $ideas = Auth::user()->ideas()->get();
+        $ideas = Auth::user()
+        ->ideas()
+        ->when($request->status, fn($query, $status) => $query->where('status', $status)) 
+        ->get();
+
+        $counts = Auth::user()->ideas()
+        ->selectRaw('status, count(*) as count')
+        ->groupBy('status')
+        ->pluck('count', 'status');
+
+        $statusCounts = collect(IdeaStatus::cases())
+        ->mapWithKeys(fn($status) => [
+            $status->value => $counts->get($status->value, 0),
+        ])
+        ->put('all', Auth::user()->ideas()->count());
 
         return view('idea.index', [
-            'ideas' => $ideas
+            'ideas' => $ideas,
+            'statusCounts' =>$statusCounts
         ]);
     }
 
