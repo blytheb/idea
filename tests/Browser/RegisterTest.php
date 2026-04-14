@@ -17,3 +17,12 @@ it('reigsters a user', function () {
         'email'=>'john@example.com'
         ]);
 });
+
+it('requires a valid email', function() {
+    visit('/register')
+    ->fill('name', 'John Doe')
+    ->fill('email', 'john')
+    ->fill('password', 'password123')
+    ->click('Create Account')
+    ->assertPathIs('/register');
+});
