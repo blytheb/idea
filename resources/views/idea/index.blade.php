@@ -8,6 +8,7 @@
                 @click="$dispatch('open-modal', 'create-idea')"
                 is="button"
                 type="button"
+                data-test="create-idea-btn"
                 class="mt-10 cursor-pointer h-32 w-full text-left"
                 >
                 <p>What's the idea?</p>

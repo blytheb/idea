@@ -17,7 +17,7 @@
 
             @guest
                 <a href="/login">Log In</a>
-                <a href="/register]" class="btn">Register</a>       
+                <a href="/register" class="btn">Register</a>       
             @endguest
 
         </div>

@@ -22,7 +22,6 @@ class IdeaFactory extends Factory
             'user_id' => User::factory(),
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
-            'links' => [fake()->url()],
         ];
     }
 }
