@@ -70,6 +70,7 @@
                             @foreach (App\IdeaStatus::cases() as $status)
                                 <button 
                                 type="button" 
+                                data-test="btn-status-{{ $status->value }}"
                                 @click="status = @js($status->value)"
                                 class="btn flex-1 h-10" 
                                 :class="{'btn-outlined': status !== @js($status->value)}"
