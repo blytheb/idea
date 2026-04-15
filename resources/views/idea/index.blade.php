@@ -58,6 +58,8 @@
                         label="Title" 
                         name="title" 
                         placeholder="Enter an idea"
+                        autofocus
+                        required
                     />
 
                     <div class="space-y-2">
@@ -74,17 +76,24 @@
                                     {{ $status->label()}}
                                 </button>
 
-                                <input type="hidden" name="status" :value="status" class="input">
-                                
                             @endforeach
+                            <input type="hidden" name="status" :value="status" class="input">
                         </div>
+                        <x-form.error name="status" />
                     </div>
+
                     <x-form.field 
-                    label="Description" 
-                    name="description" 
-                    type="textarea"
-                    placeholder="Describe your idea..."
-                />
+                        label="Description" 
+                        name="description" 
+                        type="textarea"
+                        placeholder="Describe your idea..."
+                    />
+
+                    <div class="flex justify-end gap-x-5">
+                        <button type="button" @click="$dispatch('close-modal')">Cancel</button>
+                        <button type="submit" class="btn">Create</button>
+                    </div>
+                
                 </div>
             </form>
         </x-modal>
