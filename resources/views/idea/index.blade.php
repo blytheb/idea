@@ -1,9 +1,19 @@
 <x-layout>
-    <div >
+    <div>
         <header class="py-8 md:py-12">
             <h1 class="text-3xl font-bold">Ideas</h1>
             <p class="text-muted-forground text-sm mt-2">Capture your thoughts. Make a plan.</p>
+            <x-card 
+                x-data
+                @click="$dispatch('open-modal', 'create-idea')"
+                is="button"
+                class="mt-10 cursor-pointer h-32 w-full text-left"
+                >
+                <p>What's the idea?</p>
+            </x-card>
         </header>
+
+
 
         <div>
              <a href="/ideas" class="btn {{ request()->has('status') ? 'btn-outlined' : ''}}">All</a>
@@ -36,7 +46,25 @@
                 <x-card>No ideas at this time</x-card>
                 @endforelse
             </div>
+        </div>
+
+        <!-- modal -->
+        <div
+            x-data="{show: false, name: 'create-idea'}"
+            x-show="show"
+            @open-modal.window="if($event.detail===name) show = true;"
+            @keydown.escape.window='show=false'
+            x-transition:enter="duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-4 -translate-x-4"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0 -translate-y-4 -translate-x-4"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs"   
+            style="display=none"
             
+        >
+            <x-card @click.away="show=false"> I AM A MODAL</x-card>
         </div>
     </div>
 </x-layout>
