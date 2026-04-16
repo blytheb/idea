@@ -37,6 +37,13 @@
             <div class="grid md:grid-cols-2 gap-6">
                 @forelse ($ideas as $idea)
                     <x-card href="{{ route('idea.show', $idea) }}">
+
+                        @if ($idea->image_path)
+                            <div class="mb-4 -mx-4 -mt-4 rounded-t-lg overflow-hidden">
+                                <img src="{{ asset('storage/'. $idea->image_path) }}" alt="" class="w-full h-auto object-cover">
+                            </div>
+                        @endif
+
                         <h3 class="text-foreground text-lg">{{ $idea->title }}</h3>
                         <div class="mt-2">
                             <x-idea-status status="{{ $idea->status }}">{{ $idea->status->label()}}</x-idea-status>
@@ -62,6 +69,7 @@
                 }" 
                 method="POST" 
                 action="{{ route('idea.store') }}"
+                enctype="multipart/form-data"
             >
                 @csrf
                 <div class="space-y-6">
@@ -101,99 +109,108 @@
                         placeholder="Describe your idea..."
                     />
 
-                {{-- //Steps Section --}}
-                <div>
-                    <fieldset class="space-y-3">
-                        <legend class="label">Actionable Steps</legend>
-
-                        <template x-for='(step, index) in steps' :key="step">
-                            <div class="flex gap-x-2 items-center">
-
-                                <input name='steps[]' x-model='step' class="input" readonly>
-                                <button 
-                                    type="button"
-                                    @click="steps.splice(index, 1)"
-                                    aria-label="Remove step"
-                                    class="form-muted-icon"
-                                >
-                                    <x-icons.close />
-                                </button>
-                            </div>
-                        </template>
+                    <div class="space-y-2">
+                        <label for="image" class="label">Featured Image</label>
                         
-                        <div class="flex gap-x-2 items-center">
-                            <input 
-                                x-model="newStep"
-                                id="new-step"
-                                data-test="new-step"
-                                placeholder="Write a step out"
-                                class="input flex-1"
-                                spellcheck="false"
-                            >
-                            <button 
-                                type="button"
-                                @click="steps.push(newStep.trim()); newStep='';"
-                                :disabled="newStep.trim().length === 0"
-                                aria-label="Add a new step"
-                                class="form-muted-icon"
-                                data-test="submit-new-step-btn"
-                            >
-                                <x-icons.close class="rotate-45"/>
-                            </button>
-                        </div>                
-                    </fieldset>
-                </div>
+                        <input type="file" name="image" accept="images/*" />
+                        <x-form.error name="image" />
+                    </div>
 
-                {{-- //Links Section --}}
-                <div>
-                    <fieldset class="space-y-3">
-                        <legend class="label">Links</legend>
-
-                        <template x-for='(link, index) in links'>
-                            <div class="flex gap-x-2 items-center">
-
-                                <input name='links[]' x-model='link' class="input">
-                                <button 
-                                    type="button"
-                                    @click="links.splice(index, 1)"
-                                    aria-label="Remove link"
-                                    class="form-muted-icon"
-                                >
-                                    <x-icons.close />
-                                </button>
-                            </div>
-                        </template>
-                        
-                        <div class="flex gap-x-2 items-center">
-                            <input 
-                                x-model="newLink"
-                                type="url"
-                                id="new-link"
-                                data-test="new-link"
-                                placeholder="http://example.com"
-                                autocomplete="url"
-                                class="input flex-1"
-                                spellcheck="false"
-                            >
-                            <button 
-                                type="button"
-                                @click="links.push(newLink.trim()); newLink='';"
-                                :disabled="newLink.trim().length === 0"
-                                aria-label="Add a new link"
-                                class="form-muted-icon"
-                                data-test="submit-new-link-btn"
-                            >
-                                <x-icons.close class="rotate-45"/>
-                            </button>
-                        </div>
-               
-                    </fieldset>
-                </div>
                     
-                <div class="flex justify-end gap-x-5">
-                    <button type="button" @click="$dispatch('close-modal')">Cancel</button>
-                    <button type="submit" class="btn">Create</button>
-                </div>
+
+                    {{-- //Steps Section --}}
+                    <div>
+                        <fieldset class="space-y-3">
+                            <legend class="label">Actionable Steps</legend>
+
+                            <template x-for='(step, index) in steps' :key="step">
+                                <div class="flex gap-x-2 items-center">
+
+                                    <input name='steps[]' x-model='step' class="input" readonly>
+                                    <button 
+                                        type="button"
+                                        @click="steps.splice(index, 1)"
+                                        aria-label="Remove step"
+                                        class="form-muted-icon"
+                                    >
+                                        <x-icons.close />
+                                    </button>
+                                </div>
+                            </template>
+                            
+                            <div class="flex gap-x-2 items-center">
+                                <input 
+                                    x-model="newStep"
+                                    id="new-step"
+                                    data-test="new-step"
+                                    placeholder="Write a step out"
+                                    class="input flex-1"
+                                    spellcheck="false"
+                                >
+                                <button 
+                                    type="button"
+                                    @click="steps.push(newStep.trim()); newStep='';"
+                                    :disabled="newStep.trim().length === 0"
+                                    aria-label="Add a new step"
+                                    class="form-muted-icon"
+                                    data-test="submit-new-step-btn"
+                                >
+                                    <x-icons.close class="rotate-45"/>
+                                </button>
+                            </div>                
+                        </fieldset>
+                    </div>
+
+                    {{-- //Links Section --}}
+                    <div>
+                        <fieldset class="space-y-3">
+                            <legend class="label">Links</legend>
+
+                            <template x-for='(link, index) in links'>
+                                <div class="flex gap-x-2 items-center">
+
+                                    <input name='links[]' x-model='link' class="input">
+                                    <button 
+                                        type="button"
+                                        @click="links.splice(index, 1)"
+                                        aria-label="Remove link"
+                                        class="form-muted-icon"
+                                    >
+                                        <x-icons.close />
+                                    </button>
+                                </div>
+                            </template>
+                            
+                            <div class="flex gap-x-2 items-center">
+                                <input 
+                                    x-model="newLink"
+                                    type="url"
+                                    id="new-link"
+                                    data-test="new-link"
+                                    placeholder="http://example.com"
+                                    autocomplete="url"
+                                    class="input flex-1"
+                                    spellcheck="false"
+                                >
+                                <button 
+                                    type="button"
+                                    @click="links.push(newLink.trim()); newLink='';"
+                                    :disabled="newLink.trim().length === 0"
+                                    aria-label="Add a new link"
+                                    class="form-muted-icon"
+                                    data-test="submit-new-link-btn"
+                                >
+                                    <x-icons.close class="rotate-45"/>
+                                </button>
+                            </div>
+                
+                        </fieldset>
+                    </div>
+                        
+                    <div class="flex justify-end gap-x-5">
+                        <button type="button" @click="$dispatch('close-modal')">Cancel</button>
+                        <button type="submit" class="btn">Create</button>
+                    </div>
 
                 
                 </div>
