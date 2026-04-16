@@ -5,7 +5,12 @@
                 <x-icons.arrow-back/> Back to Ideas
             </a>
             <div class="gap-x-3 flex items-center">
-                <button class="btn btn-outlined">
+                <button 
+                    x-data
+                    data-test="edit-idea-btn"
+                    @click="$dispatch('open-modal', 'edit-idea')"
+                    class="btn btn-outlined"
+                >
                     <x-icons.external/>
                     Edit Idea
                 </button>
@@ -27,7 +32,7 @@
             <h1 class="font-bold text-4xl"> {{$idea->title}}</h1>
 
             <div class="mt-2 flex gap-x-3 items-center">
-                <x-idea-status :status="$idea->status->value">{{ $idea->status->label() }}</x-idea-status>
+                <x-idea.status :status="$idea->status->value">{{ $idea->status->label() }}</x-idea.status>
                 <div class="text-muted-foreground text-sm">{{ $idea->created_at->diffForHumans()}}</div>
             </div>
             <x-card>
@@ -69,6 +74,7 @@
             </div>
             @endif
         </div>
+        <x-idea.modal :idea="$idea"/>
 
     </div>
 </x-layout>
