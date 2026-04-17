@@ -34,4 +34,5 @@ Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
 
 Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
-Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
