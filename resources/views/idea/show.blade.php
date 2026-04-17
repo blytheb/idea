@@ -63,7 +63,7 @@
             </div>
             @endif
 
-            @if($idea->links->count())
+            @if($idea->links)
             <div class="mt-3 space-y-2">
                 <h3 class="font-bold text-xl mt-6">Links</h3>
                 <div>
