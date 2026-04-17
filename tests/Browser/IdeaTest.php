@@ -35,7 +35,6 @@ it('creates a new idea', function () {
 
 it('edits an existing idea', function () {
     $this->actingAs($user = User::factory()->create());
-
     $idea = Idea::factory()->for($user)->create();
 
     visit(route('idea.show', $idea))
@@ -51,8 +50,8 @@ it('edits an existing idea', function () {
         ->click('@submit-new-step-btn')
         ->fill('new-step', 'do it again')
         ->click('@submit-new-step-btn')
-        ->click('Create')
-        ->assertPathIs('/ideas');
+        ->click('Update')
+        ->assertRoute('idea.show', [$idea]);
 
     expect($idea = $user->ideas()->first())->toMatchArray([
         'title' => 'Some example title',
