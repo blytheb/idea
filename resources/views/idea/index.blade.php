@@ -48,7 +48,7 @@
                         <div class="mt-2">
                             <x-idea.status status="{{ $idea->status }}">{{ $idea->status->label()}}</x-idea.status>
                         </div>
-                        <div class="mt-5 line-clamp-3">{{ $idea->description }}</div>
+                        {{-- <div class="mt-5 line-clamp-3">{{ $idea->description }}</div> --}}
                         <div class="mt-4">{{ $idea->created_at->diffForHumans() }}</div>
                     </x-card>
                 @empty
@@ -56,6 +56,8 @@
                 @endforelse
             </div>
         </div>
+
+
 
         <!-- modal -->
         <x-idea.modal />
